@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Times of Tieto — News, Markets, Sports &amp; More</title>
+<style>
+  :root{
+    --bg:#1F1F1F; --bg2:#242424; --card:#2B2B2B; --card2:#313131;
+    --border:rgba(255,255,255,.08);
+    --text:#fff; --muted:#B5B5B5; --muted2:#8a8a8a;
+    --accent:#2196F3; --green:#4CAF50; --red:#FF5252; --amber:#FFC107;
+    --radius:14px; --radius-sm:10px;
+    --shadow:0 6px 20px rgba(0,0,0,.35);
+    --font:'Inter','Segoe UI',-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;
+  }
+  html[data-theme="light"]{
+    --bg:#eef1f5; --bg2:#f5f7fa; --card:#ffffff; --card2:#f7f8fb;
+    --border:rgba(0,0,0,.08); --text:#111; --muted:#555; --muted2:#777;
+    --shadow:0 4px 14px rgba(0,0,0,.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
+  a{color:inherit;text-decoration:none}
+  button{font-family:inherit;cursor:pointer}
+  img{display:block}
+
+  /* ===== Scrollbar ===== */
+  ::-webkit-scrollbar{height:8px;width:8px}
+  ::-webkit-scrollbar-thumb{background:rgba(255,255,255,.18);border-radius:8px}
+  ::-webkit-scrollbar-track{background:transparent}
+
+  /* ===== Top Bar ===== */
+  .topbar{max-width:1400px;margin:0 auto;padding:14px 24px 0;display:flex;align-items:center;gap:22px}
+  .logo{display:flex;align-items:center;gap:10px}
+  .logo-mark{width:42px;height:34px;border-radius:9px;background:linear-gradient(135deg,#2196F3,#1565C0);display:grid;place-items:center;font-weight:800;color:#fff;font-size:14px;letter-spacing:.5px}
+  .logo-name{font-size:20px;font-weight:800;letter-spacing:-.4px}
+  .logo-name span{color:var(--accent)}
+  .top-actions{margin-left:auto;display:flex;align-items:center;gap:6px}
+  .icon-btn{width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);display:grid;place-items:center;font-size:16px;transition:.2s}
+  .icon-btn:hover{background:var(--card2);transform:translateY(-1px)}
+  .avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#FF5252,#C62828);display:grid;place-items:center;font-weight:700;color:#fff}
+
+  /* ===== Nav ===== */
+  nav.mainnav{position:sticky;top:0;z-index:60;background:rgba(31,31,31,.85);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);margin-top:12px}
+  .nav-inner{position:relative}
+  html[data-theme="light"] nav.mainnav{background:rgba(255,255,255,.85)}
+  .nav-inner{max-width:1400px;margin:0 auto;padding:10px 24px;display:flex;align-items:center;gap:6px;overflow-x:auto;scrollbar-width:none}
+  .nav-inner::-webkit-scrollbar{display:none}
+  .nav-link{padding:8px 14px;border-radius:9px;font-size:14px;font-weight:600;color:var(--muted);white-space:nowrap;transition:.18s;border:none;background:none}
+  .nav-link:hover{background:var(--card);color:var(--text)}
+  .nav-link.active{background:var(--accent);color:#fff}
+  .hamburger{display:none}
+  .mobile-menu{display:none}
+
+  /* ===== Wrap & grid ===== */
+  .wrap{max-width:1400px;margin:0 auto;padding:20px 24px 40px}
+  section{margin-bottom:34px}
+  .sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+  .sec-head h2{font-size:20px;font-weight:800;letter-spacing:-.3px}
+  .view-all{font-size:13px;font-weight:600;color:var(--accent)}
+  .view-all:hover{text-decoration:underline}
+  .three{display:grid;grid-template-columns:1fr 300px;gap:20px}
+
+  /* ===== Breaking ticker ===== */
+  .ticker{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:10px 14px;margin-bottom:18px;overflow:hidden}
+  .ticker .b-label{background:var(--red);color:#fff;font-size:11px;font-weight:800;padding:4px 9px;border-radius:6px;letter-spacing:.5px;white-space:nowrap;display:flex;align-items:center;gap:5px;animation:pulse 1.8s infinite;flex-shrink:0;position:relative;z-index:2}
+  @keyframes pulse{50%{opacity:.7}}
+  .ticker-track{overflow:hidden;flex:1;white-space:nowrap;margin-left:6px}
+  .ticker-track span{display:inline-block;padding-right:60px;font-size:14px;font-weight:600}
+  .ticker .t-close{background:none;border:none;color:var(--muted);font-size:16px}
+  .ticker.closed{display:none}
+
+  /* ===== Hero ===== */
+  .hero{display:grid;grid-template-columns:1.7fr 1fr 1fr;gap:18px}
+  .hero-carousel{position:relative;border-radius:var(--radius);overflow:hidden;background:var(--card);min-height:420px}
+  .slide{position:absolute;inset:0;opacity:0;transition:opacity .6s ease}
+  .slide.active{opacity:1}
+  .slide img{width:100%;height:100%;object-fit:cover}
+  .slide .overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.88) 10%,rgba(0,0,0,.15) 60%)}
+  .slide .content{position:absolute;left:0;right:0;bottom:0;padding:24px}
+  .cat-badge{display:inline-block;background:var(--accent);color:#fff;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;padding:4px 10px;border-radius:6px;margin-bottom:10px}
+  .slide .content h2{font-size:clamp(20px,2.6vw,30px);line-height:1.15;font-weight:800;margin-bottom:8px}
+  .slide .content p{color:#ddd;font-size:14px;max-width:560px}
+  .slide .meta{margin-top:12px;font-size:13px;color:#bbb;display:flex;align-items:center;gap:12px}
+  .eng-icons{display:flex;gap:10px;margin-top:10px}
+  .eng-icons button{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:20px;padding:5px 12px;font-size:12px;display:flex;gap:5px;align-items:center;transition:.15s}
+  .eng-icons button:hover{background:rgba(255,255,255,.3)}
+  .eng-icons button.on{color:var(--amber)}
+  .car-btn{position:absolute;top:50%;transform:translateY(-50%);z-index:5;width:38px;height:38px;border-radius:50%;background:rgba(0,0,0,.45);border:none;color:#fff;font-size:18px;display:grid;place-items:center;transition:.2s}
+  .car-btn:hover{background:rgba(0,0,0,.7)}
+  .car-prev{left:12px}.car-next{right:12px}
+  .dots{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:5}
+  .dots button{width:9px;height:9px;border-radius:50%;border:none;background:rgba(255,255,255,.4)}
+  .dots button.active{background:#fff;width:22px;border-radius:6px}
+
+  /* Featured column */
+  .feat-col{display:flex;flex-direction:column;gap:14px}
+  .feat-card{position:relative;flex:1;border-radius:var(--radius);overflow:hidden;background:var(--card);border:1px solid var(--border)}
+  .feat-card img{width:100%;height:170px;object-fit:cover}
+  .feat-card .fc-body{padding:12px 14px}
+  .feat-card h3{font-size:15px;font-weight:700;line-height:1.3;margin:6px 0}
+  .feat-card h3:hover{color:var(--accent)}
+  .src-time{font-size:12px;color:var(--muted)}
+  .src-time b{color:var(--text)}
+
+  /* Sponsored banner */
+  .spon{background:linear-gradient(135deg,#1a2744,#0d1b2a);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column}
+  .spon .sp-img{height:150px;position:relative;overflow:hidden}
+  .spon .sp-img img{width:100%;height:100%;object-fit:cover}
+  .spon .sp-label{position:absolute;top:10px;left:10px;background:rgba(0,0,0,.7);color:#fff;font-size:10px;text-transform:uppercase;letter-spacing:1px;padding:4px 8px;border-radius:5px}
+  .spon .sp-body{padding:16px;text-align:center}
+  .spon h4{font-size:16px;margin-bottom:8px}
+  .spon p{color:var(--muted);font-size:13px;margin-bottom:12px}
+  .cta{background:var(--accent);color:#fff;border:none;padding:9px 16px;border-radius:8px;font-weight:700;font-size:13px;transition:.2s}
+  .cta:hover{filter:brightness(1.1)}
+
+  /* Article cards */
+  .article{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s}
+  .article:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+  .article .thumb{position:relative;overflow:hidden;aspect-ratio:16/10;background:linear-gradient(135deg,#3a3a3a,#242424)}
+  .article .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+  .article:hover .thumb img{transform:scale(1.06)}
+  .thumb .play{position:absolute;inset:0;display:grid;place-items:center;font-size:46px;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.6)}
+  .thumb .dur{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.8);color:#fff;font-size:12px;padding:2px 8px;border-radius:6px}
+  .article .abody{padding:14px}
+  .article h3{font-size:15px;font-weight:700;line-height:1.35;margin:8px 0}
+  .article h3:hover{color:var(--accent)}
+  .cat-src-meta{margin-top:auto;padding-top:10px;display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--muted)}
+  .bookmark{background:none;border:none;color:var(--muted);font-size:16px;transition:.2s}
+  .bookmark.on{color:var(--amber)}
+  .article.small{flex-direction:row;align-items:center;gap:12px}
+  .article.small .thumb{width:100px;height:72px;flex-shrink:0;aspect-ratio:auto}
+  .article.small h3{font-size:13px;margin:0}
+  .article.list{flex-direction:row;gap:14px;padding:12px}
+  .article.list .thumb{width:120px;height:84px;aspect-ratio:auto;flex-shrink:0}
+  .article.list h3{font-size:15px;margin:0;color:var(--text)}
+  .article.list h3:hover{color:var(--accent)}
+
+  /* grids */
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  /* Agent 1 result panel (full width, below grid) */
+  .agent1-panel{display:none;margin-top:16px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;animation:fade .3s;border-top:3px solid var(--accent)}
+  .agent1-panel.show{display:block}
+  .agent1-close{background:none;border:none;color:var(--muted);font-size:22px;float:right;margin:-4px -4px 0 0}
+
+  /* featured large + small list mix */
+  .cat-mix{display:grid;grid-template-columns:1fr 1.4fr;gap:16px}
+  .cat-mix .right{display:grid;gap:12px}
+
+  /* Top stories */
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+  .panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;height:fit-content}
+  .panel h2{font-size:18px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  .panel .menu{background:none;border:none;color:var(--muted);font-size:18px;margin-left:auto}
+  .ts-row{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);align-items:flex-start;cursor:pointer}
+  .ts-row:last-child{border-bottom:none}
+  .ts-row:hover h3{color:var(--accent)}
+  .ts-logo{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:12px;color:#fff;flex-shrink:0}
+  .ts-row h3{font-size:14px;line-height:1.35}
+  .ts-row .src-time{font-size:11px;margin-top:3px}
+
+  /* Trending number card */
+  .trend-item{display:flex;align-items:center;gap:14px;padding:9px 0;cursor:pointer;border-bottom:1px solid var(--border)}
+  .trend-item:last-child{border-bottom:none}
+  .trend-num{font-size:26px;font-weight:800;color:var(--muted2);min-width:40px}
+  .trend-item:hover h3{color:var(--accent)}
+  /* Supply Chain Commodity Watchlist */
+  .commodity-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px}
+  .commodity-card h2{font-size:16px;display:flex;align-items:center;gap:8px;margin-bottom:10px}
+  .cm-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
+  .cm-row:last-child{border-bottom:none}
+  .cm-icon{width:34px;height:34px;border-radius:8px;display:grid;place-items:center;font-size:15px;font-weight:800;color:#fff;flex-shrink:0}
+  .cm-info{flex:1;min-width:0}
+  .cm-name{font-size:13px;font-weight:700}
+  .cm-sub{font-size:11px;color:var(--muted)}
+  .cm-right{text-align:right;flex-shrink:0}
+  .cm-price{font-size:14px;font-weight:700}
+  .cm-chg{font-size:12px;font-weight:600}
+  .cm-spark{width:60px;height:28px;flex-shrink:0}
+
+  /* Weather */
+  .weather{background:linear-gradient(135deg,#1b2c4a,#0f3245);padding:18px;border-radius:var(--radius);border:1px solid var(--border)}
+  .w-city{font-size:13px;color:#aac4e8;display:flex;align-items:center;gap:6px}
+  .w-now{display:flex;align-items:center;gap:14px;margin-top:6px}
+  .w-temp{font-size:42px;font-weight:800}
+  .w-desc{font-size:14px;color:#cfe0f7}
+  .w-feel{font-size:13px;color:#9db4d9;margin-top:4px}
+  .w-hl{margin-top:10px;font-size:13px;color:#cfe0f7;display:flex;gap:14px}
+  .w-days{display:flex;justify-content:space-between;margin-top:12px;text-align:center}
+  .w-day{font-size:12px;color:#9db4d9;flex:1}
+  .w-day .emoji{font-size:20px;display:block;margin:4px 0}
+  .w-day b{color:#fff}
+  .w-ctl{display:flex;gap:8px;margin-top:12px}
+  .w-ctl button{background:rgba(255,255,255,.12);border:none;color:#fff;border-radius:6px;font-size:11px;padding:4px 8px}
+  .w-city-sel{margin-top:10px;display:none}
+  .w-city-sel.show{display:flex;flex-direction:column;gap:6px}
+  .w-city-sel input{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:6px;padding:6px 10px;font-size:13px}
+
+  /* Watchlist */
+  .watch{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px}
+  .watch h2{font-size:16px;display:flex;align-items:center;gap:8px;margin-bottom:6px}
+  .wl-item{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border)}
+  .wl-item:last-child{border-bottom:none}
+  .wl-name{font-weight:600;font-size:14px}
+  .wl-val{font-size:13px;color:var(--muted)}
+  .up{color:var(--green)}.down{color:var(--red)}
+  .wl-remove{background:none;border:none;color:var(--muted);font-size:14px;margin-left:6px}
+  .wl-add{display:flex;gap:6px;margin-top:10px}
+  .wl-add select,.wl-add input{background:var(--card2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:6px 8px;font-size:12px}
+  .wl-add button{background:var(--accent);border:none;color:#fff;border-radius:8px;padding:6px 10px;font-size:12px;font-weight:600}
+
+  /* Score carousel */
+  .score-scroll{display:flex;gap:12px;overflow-x:auto;padding-bottom:6px}
+  .score-card{flex:0 0 260px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px}
+  .sc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:11px;color:var(--muted);font-weight:600}
+  .live-dot{color:var(--red);font-weight:800}
+  .final-dot{color:var(--green);font-weight:800}
+  .upcoming-dot{color:var(--amber);font-weight:800}
+  .sc-team{display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:14px}
+  .sc-logo{width:26px;height:26px;border-radius:50%;background:var(--card2);display:grid;place-items:center;font-weight:800;font-size:11px}
+  .sc-status{font-size:12px;color:var(--muted);margin-top:8px}
+
+  /* tabs */
+  .tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+  .tab{background:var(--card);border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:7px 14px;font-size:13px;font-weight:600;transition:.15s}
+  .tab:hover{color:var(--text)}
+  .tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+  /* video scroll */
+  .video-scroll{display:flex;gap:16px;overflow-x:auto;padding-bottom:6px}
+  .video-card{flex:0 0 320px}
+
+  /* newsletter */
+  .newsletter{background:linear-gradient(120deg,#0d1b2a,#1b2c4a,#0f3245);border-radius:var(--radius);padding:36px;text-align:center;border:1px solid var(--border)}
+  .newsletter h2{font-size:26px;margin-bottom:8px}
+  .newsletter p{color:#c4d4ea;margin-bottom:20px}
+  .news-form{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .news-form input{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:10px;padding:12px 16px;font-size:14px;min-width:280px}
+  .news-form input::placeholder{color:#9db4d9}
+
+  /* footer */
+  footer{background:#1A1A1A;border-top:1px solid var(--border);margin-top:40px}
+  html[data-theme="light"] footer{background:#f0f1f3}
+  .foot-inner{max-width:1400px;margin:0 auto;padding:36px 24px 20px;display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+  .foot-col h4{font-size:14px;margin-bottom:12px}
+  .foot-col ul{list-style:none}
+  .foot-col li{margin-bottom:8px}
+  .foot-col a{color:var(--muted);font-size:13px}
+  .foot-col a:hover{color:var(--text);text-decoration:underline}
+  .foot-bottom{max-width:1400px;margin:0 auto;padding:14px 24px;border-top:1px solid var(--border);font-size:12px;color:var(--muted2);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+
+  /* Recommended */
+  .interests{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .interest{background:var(--card);border:1px solid var(--border);color:var(--muted);border-radius:20px;padding:6px 14px;font-size:13px;transition:.15s}
+  .interest.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+  /* horizontal trending scroll */
+  .trend-scroll{display:flex;gap:12px;overflow-x:auto;padding-bottom:6px}
+  .trend-pill{flex:0 0 auto;background:var(--card);border:1px solid var(--border);border-radius:40px;padding:10px 18px;font-size:14px;font-weight:600}
+
+  /* ===== Search overlay ===== */
+  .search-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:none;align-items:flex-start;justify-content:center;padding-top:60px}
+  .search-overlay.show{display:flex}
+  .search-box{background:var(--card);border-radius:16px;width:min(620px,92vw);box-shadow:var(--shadow);overflow:hidden}
+  .search-input{width:100%;background:transparent;border:none;outline:none;color:var(--text);font-size:16px;padding:18px 20px}
+  .search-results{max-height:50vh;overflow-y:auto;border-top:1px solid var(--border);padding:8px}
+  .sr-item{padding:10px;border-radius:8px;cursor:pointer;font-size:14px}
+  .sr-item:hover{background:var(--card2)}
+  .sr-item small{color:var(--muted)}
+
+  /* Agent1 result modal inside card */
+  .resultbox{display:none;margin-top:12px;border-top:1px solid var(--border);padding-top:12px;animation:fade .3s}
+  .resultbox.show{display:block}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .ring{width:60px;height:60px;border-radius:50%;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;color:#fff;flex-shrink:0}
+  .ring.LOW{background:var(--green)}.ring.MEDIUM{background:var(--amber);color:#222}.ring.HIGH{background:var(--red)}
+  .ring small{font-size:9px;font-weight:600}
+  .res-head{display:flex;align-items:center;gap:14px}
+  .pill{font-size:12px;font-weight:700;padding:3px 9px;border-radius:6px}
+  .pill.yes{background:rgba(76,175,80,.2);color:var(--green)}
+  .pill.no{background:rgba(255,82,82,.2);color:var(--red)}
+  .res-kv{display:grid;grid-template-columns:auto 1fr;gap:2px 14px;font-size:13px;margin-top:10px}
+  .res-kv b{color:var(--muted)}
+  .res-summary{font-size:13px;margin-top:8px;color:var(--muted)}
+  .spinner{width:20px;height:20px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;display:inline-block;vertical-align:middle;margin-right:8px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* skeleton */
+  .skeleton{background:var(--card);border-radius:var(--radius);overflow:hidden;border:1px solid var(--border)}
+  .sk-img{height:150px;background:linear-gradient(90deg,var(--card) 25%,var(--card2) 50%,var(--card) 75%);background-size:200% 100%;animation:shimmer 1.3s infinite}
+  .sk-line{height:14px;margin:10px 14px;border-radius:6px;background:var(--card2);animation:shimmer 1.3s infinite}
+  @keyframes shimmer{to{background-position:-200% 0}}
+
+  /* toast */
+  #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:11px 18px;border-radius:10px;font-size:13px;opacity:0;pointer-events:none;transition:.25s;z-index:300}
+  #toast.show{opacity:1}
+
+  /* a11y focus */
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  /* responsive */
+  @media(max-width:1100px){
+    .hero{grid-template-columns:1fr 1fr}
+    .spon{display:none}
+    .three{grid-template-columns:1fr}
+    .grid-4{grid-template-columns:repeat(2,1fr)}
+  }
+  @media(max-width:860px){
+    .hero{grid-template-columns:1fr}
+    .two-col,.cat-mix,.grid-3,.grid-2{grid-template-columns:1fr}
+    .nav-link{display:none}
+    .hamburger{display:grid;place-items:center;width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:18px;position:relative;z-index:10}
+    .nav-inner{position:relative;overflow-x:visible;overflow-y:visible}
+    .mobile-menu{position:absolute;top:100%;left:0;right:0;background:var(--bg2);border:1px solid var(--border);border-radius:0 0 var(--radius) var(--radius);padding:10px;display:none;flex-direction:column;z-index:100;box-shadow:0 8px 20px rgba(0,0,0,.4)}
+    .mobile-menu.show{display:flex}
+    .mobile-menu .nav-link{display:block;text-align:left}
+    .top-actions .icon-btn{display:grid}
+    .foot-inner{grid-template-columns:1fr 1fr}
+  }
+  @media(max-width:480px){
+    .grid-4{grid-template-columns:1fr}
+    .logo-name{font-size:17px}
+    .news-form input{min-width:100%}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-mark">TOT</div>
+    <div class="logo-name">Times of <span>Tieto</span></div>
+  </div>
+  <div class="top-actions">
+    <button class="icon-btn" id="themeBtn" title="Toggle theme" aria-label="Toggle dark/light theme">🌙</button>
+    <button class="icon-btn" id="searchBtn" title="Search" aria-label="Search">🔍</button>
+    <button class="icon-btn" id="bellBtn" title="Notifications" aria-label="Notifications">🔔</button>
+    <button class="icon-btn" id="bookmarkNavBtn" title="Saved articles" aria-label="Saved articles">🔖</button>
+    <button class="icon-btn" id="settingsBtn" title="Personalize" aria-label="Personalize">⚙️</button>
+    <div class="avatar">AD</div>
+  </div>
+</div>
+
+<!-- MAIN NAV -->
+<nav class="mainnav" aria-label="Main navigation">
+  <div class="nav-inner">
+    <button class="hamburger" id="hamburger" aria-label="Menu">☰</button>
+    <div class="mobile-menu" id="mobileMenu">
+      <a class="nav-link active" href="#">Discover</a>
+      <a class="nav-link" href="#">News</a>
+      <a class="nav-link" href="#">Sports</a>
+      <a class="nav-link" href="#">Business</a>
+      <a class="nav-link" href="#">Technology</a>
+      <a class="nav-link" href="#">Entertainment</a>
+      <a class="nav-link" href="#">Money</a>
+      <a class="nav-link" href="#">Weather</a>
+      <a class="nav-link" href="#">Lifestyle</a>
+      <a class="nav-link" href="#">Travel</a>
+    </div>
+    <a class="nav-link active" href="#">Discover</a>
+    <a class="nav-link" href="#">News</a>
+    <a class="nav-link" href="#">Sports</a>
+    <a class="nav-link" href="#">Business</a>
+    <a class="nav-link" href="#">Technology</a>
+    <a class="nav-link" href="#">Entertainment</a>
+    <a class="nav-link" href="#">Money</a>
+    <a class="nav-link" href="#">Weather</a>
+    <a class="nav-link" href="#">Lifestyle</a>
+    <a class="nav-link" href="#">Travel</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- BREAKING TICKER -->
+  <div class="ticker" id="ticker">
+    <span class="b-label">🔴 BREAKING</span>
+    <div class="ticker-track" id="tickerTrack"></div>
+    <button class="t-close" id="tickerClose" aria-label="Close ticker">✕</button>
+  </div>
+
+  <!-- HERO -->
+  <section aria-label="Top stories">
+    <div class="hero">
+      <!-- main carousel -->
+      <div class="hero-carousel" id="heroCarousel" aria-label="Featured stories carousel"></div>
+
+      <!-- featured column -->
+      <div class="feat-col" id="featuredCol"></div>
+
+      <!-- sponsored -->
+      <div class="spon">
+        <div class="sp-img">
+          <img src="https://picsum.photos/seed/spon/600/400" alt="" loading="lazy">
+          <span class="sp-label">Sponsored</span>
+        </div>
+        <div class="sp-body">
+          <h4>Discover smarter tools for your business</h4>
+          <p>Streamline workflows with AI-powered analytics built for modern teams.</p>
+          <button class="cta">Learn More</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOP STORIES + WATCHLIST -->
+  <section>
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div class="panel">
+          <h2>🔥 Top Stories <button class="menu" aria-label="More options">⋯</button></h2>
+          <div id="topStories"></div>
+        </div>
+        <div class="commodity-card">
+          <h2>🏭 Supply Chain Watchlist</h2>
+          <div id="commodityList"></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div class="watch">
+          <h2>📈 Watchlist Suggestions</h2>
+          <div id="watchlist"></div>
+          <div class="wl-add">
+            <select id="wlSelect"><option>Gold</option><option>Silver</option><option>NIFTY 50</option><option>Tata Steel</option><option>USD/INR</option><option>Bitcoin</option></select>
+            <button id="wlAddBtn">Add</button>
+          </div>
+        </div>
+        <div class="weather" id="weatherWidget"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRENDING SCROLL -->
+  <section>
+    <h2 style="margin-bottom:14px">🔥 Trending now</h2>
+    <div class="trend-scroll" id="trendScroll"></div>
+  </section>
+
+  <!-- CATEGORY SECTIONS -->
+  <section id="newsSections"></section>
+
+  <!-- SPORTS -->
+  <section>
+    <div class="sec-head"><h2>🏏 Sports Dashboard</h2><a class="view-all" href="#">View all →</a></div>
+    <div class="tabs" id="sportsTabs">
+      <button class="tab active" data-sport="cricket">Cricket</button>
+      <button class="tab" data-sport="football">Football</button>
+      <button class="tab" data-sport="tennis">Tennis</button>
+      <button class="tab" data-sport="basketball">Basketball</button>
+      <button class="tab" data-sport="f1">Formula 1</button>
+    </div>
+    <div class="score-scroll" id="scoreScroll"></div>
+    <div id="sportsNews" style="margin-top:16px"></div>
+  </section>
+
+  <!-- VIDEO -->
+  <section>
+    <div class="sec-head"><h2>▶️ Watch</h2><a class="view-all" href="#">View all →</a></div>
+    <div class="video-scroll" id="videoScroll"></div>
+  </section>
+
+  <!-- RECOMMENDED -->
+  <section>
+    <div class="sec-head"><h2>✨ Recommended for you</h2></div>
+    <div class="interests" id="interestChips"></div>
+    <div class="grid-4" id="recommended"></div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section>
+    <div class="newsletter">
+      <h2>📬 Stay Informed</h2>
+      <p>Get the day's biggest stories delivered straight to your inbox.</p>
+      <form class="news-form" id="newsForm">
+        <input type="email" placeholder="Your email address" required aria-label="Email address">
+        <button class="cta" type="submit">Subscribe</button>
+      </form>
+    </div>
+  </section>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-inner">
+    <div class="foot-col">
+      <h4>Explore</h4>
+      <ul><li><a href="#">News</a></li><li><a href="#">Sports</a></li><li><a href="#">Business</a></li><li><a href="#">Technology</a></li><li><a href="#">Entertainment</a></li><li><a href="#">Weather</a></li></ul>
+    </div>
+    <div class="foot-col">
+      <h4>Company</h4>
+      <ul><li><a href="#">About</a></li><li><a href="#">Contact</a></li><li><a href="#">Careers</a></li><li><a href="#">Advertise</a></li><li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li></ul>
+    </div>
+    <div class="foot-col">
+      <h4>Follow</h4>
+      <ul><li><a href="#">𝕏 Twitter</a></li><li><a href="#">Facebook</a></li><li><a href="#">Instagram</a></li><li><a href="#">YouTube</a></li><li><a href="#">LinkedIn</a></li></ul>
+    </div>
+    <div class="foot-col">
+      <h4>About Times of Tieto</h4>
+      <ul><li><a href="#">Our mission</a></li><li><a href="#">Editorial policy</a></li><li><a href="#">Fact-checking</a></li><li><a href="#">RSS feeds</a></li></ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2026 Times of Tieto Media. All rights reserved.</span>
+    <span>Made with 💙 for a smarter news dashboard.</span>
+  </div>
+</footer>
+
+<!-- SEARCH OVERLAY -->
+<div class="search-overlay" id="searchOverlay">
+  <div class="search-box">
+    <input class="search-input" id="searchInput" placeholder="Search news, topics, companies..." aria-label="Search">
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* =========================================================
+   DATA LAYER — mock datasets. Swap with real API services later.
+   ========================================================= */
+const img = (seed,w,h)=>`https://picsum.photos/seed/${seed}/${w||400}/${h||300}`;
+
+const JSONFeed = {
+  type:'analysis', category:'Supply Chain', source:'Agent 1',
+};
+
+// in-memory news articles (mock)
+const news = {
+  hero:[
+    {id:'h1',title:'AI startups are changing how businesses build software',category:'Technology',source:'TechDaily',time:'35 min ago',img:img('aiStartup',800,500),desc:'From copilots to autonomous workflows, a new wave of agents is reshaping software engineering across industries.',reactions:1240},
+    {id:'h2',title:'Global markets rally on fresh economic optimism',category:'Business',source:'Reuters',time:'1h',img:img('markets',800,500),desc:'Equities climbed across Asia and Europe as investors bet on a softer path for interest rates.',reactions:860},
+    {id:'h3',title:'The future of electric mobility takes center stage',category:'Autos',source:'MotorTrend',time:'2h',img:img('ev',800,500),desc:'Manufacturers race to deliver affordable long-range EVs as charging networks expand rapidly.',reactions:660},
+  ],
+  featured:[
+    {title:'Global leaders meet for major international summit',category:'World',source:'BBC',time:'12 min',img:img('summit',400,220)},
+    {title:'Markets rise following latest economic data',category:'Business',source:'Reuters',time:'25 min',img:img('economic',400,220)},
+  ],
+  topStories:[
+    {source:'BBC',logo:'B',title:'Global leaders meet for major international summit',time:'12 min',color:'#B4435F'},
+    {source:'Reuters',logo:'R',title:'Markets rise following latest economic data',time:'25 min',color:'#FF7F00'},
+    {source:'The Hindu',logo:'TH',title:'New policy announcement sparks discussion',time:'42 min',color:'#1565C0'},
+    {source:'NDTV',logo:'N',title:'Tech giants announce record quarterly earnings',time:'1h',color:'#4CAF50'},
+  ],
+  sections:[
+    {title:'🇮🇳 India',items:[
+      {title:'India announces squad for upcoming cricket series',cat:'Sports',src:'ESPN',time:'20m',img:img('indcric',400,300)},
+      {title:'Policy reform targets small business lending',cat:'Economy',src:'PTI',time:'1h',img:img('indpol',400,300)},
+      {title:'City metro network expansion approved',cat:'Infra',src:'TOI',time:'3h',img:img('metro',400,300)},
+    ]},
+    {title:'🌍 World',items:[
+      {title:'Climate summit concludes with new pledges',cat:'World',src:'Al Jazeera',time:'40m',img:img('climatesummit',400,300)},
+      {title:'Supply chains brace for peak shipping season',cat:'World',src:'The Hindu',time:'2h',img:img('shipping',400,300)},
+      {title:'Central banks signal shift in policy stance',cat:'Economy',src:'Bloomberg',time:'4h',img:img('centralbank',400,300)},
+    ]},
+    {title:'⚡ Technology',items:[
+      {title:'Latest flagship smartphone raises the bar',cat:'Gadgets',src:'The Verge',time:'30m',img:img('phone',400,300)},
+      {title:'Startup raises funding to build AI agents',cat:'AI',src:'TechCrunch',time:'1h',img:img('aifunding',400,300)},
+      {title:'Cloud providers battle for enterprise dominance',cat:'Software',src:'VentureBeat',time:'3h',img:img('cloud',400,300)},
+    ]},
+    {title:'💰 Business',items:[
+      {title:'Markets: indices close at record highs',cat:'Markets',src:'Reuters',time:'15m',img:img('record',400,300)},
+      {title:'Companies bet big on emerging markets',cat:'Companies',src:'FT',time:'2h',img:img('emerging',400,300)},
+      {title:'Startups navigate a tougher funding climate',cat:'Startups',src:'Forbes',time:'5h',img:img('funding',400,300)},
+    ]},
+    {title:'🎬 Entertainment',items:[
+      {title:'Box office hit breaks opening weekend records',cat:'Movies',src:'Variety',time:'1h',img:img('movie',400,300)},
+      {title:'New streaming series becomes global sensation',cat:'Streaming',src:'The Hollywood Reporter',time:'4h',img:img('series',400,300)},
+      {title:'Music festival lineup revealed to fanfare',cat:'Music',src:'Billboard',time:'6h',img:img('festival',400,300)},
+    ]},
+  ],
+  recommended:[
+    {title:'How AI is transforming everyday productivity',cat:'AI',src:'WIRED',time:'2h',img:img('aiprod',400,300)},
+    {title:'Cricket: player auction underscores market boom',cat:'Cricket',src:'ESPNcricinfo',time:'1h',img:img('auction',400,300)},
+    {title:'Gold prices surge to record as demand climbs',cat:'Markets',src:'MoneyControl',time:'3h',img:img('gold',400,300)},
+    {title:'Cloud computing trends to watch this year',cat:'Technology',src:'TechRadar',time:'5h',img:img('cloudtrend',400,300)},
+    {title:'Global chip shortage eases but a new one looms',cat:'Business',src:'Reuters',time:'6h',img:img('chips',400,300)},
+  ],
+  videos:[
+    {title:'Markets react to latest economic announcement',src:'News Network',time:'1h',dur:'04:32',img:img('vid1',400,240)},
+    {title:'Inside the making of a hit streaming series',src:'Pulse Studios',time:'3h',dur:'09:15',img:img('vid2',400,240)},
+    {title:'The race to build autonomous vehicles',src:'AutoVision',time:'5h',dur:'07:48',img:img('vid3',400,240)},
+    {title:'Startups pitch at flagship demo day',src:'TechHub',time:'8h',dur:'12:04',img:img('vid4',400,240)},
+  ],
+  trending:['AI regulations','Cricket World Cup','Stock market rally','New smartphone launch','Bollywood releases','Global markets','Electric vehicles','Streaming wars'],
+};
+
+// markets watchlist (static mock)
+const marketsData = [
+  {name:'Silver',val:'₹67.22',chg:'+0.33%',up:true},
+  {name:'Gold',val:'₹4,442.90',chg:'+0.09%',up:true},
+  {name:'NIFTY 50',val:'25,102',chg:'+0.68%',up:true},
+  {name:'Tata Steel',val:'₹188.39',chg:'+2.30%',up:true},
+];
+const marketPool = ['Gold','Silver','NIFTY 50','Tata Steel','USD/INR','Bitcoin','Sensex','Tech Mahindra'];
+
+// Supply chain commodities (static mock with sparkline data)
+const commodities = [
+  {name:'Cashew (RCN)',ticker:'CASHEW',price:'$1,245/MT',chg:'+2.4%',up:true,color:'#4CAF50',icon:'🫘',
+   spark:[42,44,41,46,48,45,50,52,48,55,58,56,60,62,65,63,68,70,72,75,78,80,82,85]},
+  {name:'Steel (HRC)',ticker:'STEEL',price:'₹52,400/T',chg:'+1.1%',up:true,color:'#2196F3',icon:'🔩',
+   spark:[30,32,28,35,38,34,40,42,38,44,46,43,48,50,47,52,54,56,53,58,60,62,58,64]},
+  {name:'Iron Ore',ticker:'IRON',price:'₹6,820/T',chg:'-0.8%',up:false,color:'#FF9800',icon:'⛏️',
+   spark:[70,68,72,65,63,67,60,58,62,55,53,57,50,48,52,45,43,47,40,38,42,36,34,38]},
+  {name:'Thermal Coal',ticker:'COAL',price:'\u20b98,150/T',chg:'+0.3%',up:true,color:'#607D8B',icon:'\uD83D\uDD25',
+   spark:[35,37,34,39,41,38,43,45,42,47,49,46,51,53,50,55,57,54,59,61,58,63,65,62]},
+  {name:'Pepper (Black)',ticker:'PEPPER',price:'₹312/kg',chg:'-1.5%',up:false,color:'#795548',icon:'🌶️',
+   spark:[55,53,57,50,48,52,45,43,47,40,38,42,35,33,37,30,28,32,27,25,29,24,22,26]},
+];
+function sparkSVG(pts,up){
+  const mx=Math.max(...pts),mn=Math.min(...pts),rng=mx-mn||1;
+  const d=pts.map((v,i)=>{const x=(i/(pts.length-1))*58;const y=26-(((v-mn)/rng)*24);return(i?'L':'M')+x.toFixed(1)+','+y.toFixed(1);}).join(' ');
+  const col=up?'#4CAF50':'#FF5252';
+  return `<svg viewBox="0 0 58 28" width="60" height="28" aria-hidden="true"><path d="${d}" fill="none" stroke="${col}" stroke-width="2" stroke-linecap="round"/></svg>`;
+}
+
+// weather (static mock)
+const weatherData = {
+  city:'Bengaluru',temp:28,desc:'Partly Cloudy',feel:30,hi:31,lo:23,
+  days:[{d:'Mon',e:'☀️',t:31},{d:'Tue',e:'🌧️',t:29},{d:'Wed',e:'☁️',t:28},{d:'Thu',e:'☀️',t:30}],
+};
+const cityPool = {Bengaluru:{t:28,e:'☀️',d:'Partly Cloudy'},Mumbai:{t:31,e:'🌧️',d:'Light Rain'},Delhi:{t:24,e:'☁️',d:'Hazy'},Chennai:{t:32,e:'☀️',d:'Sunny'}};
+
+// sports scores
+const scores = [
+  {sport:'CRICKET',status:'live',teams:[['India','168/4'],['Australia','142/8']],note:'India won by 26 runs · 48.2 ov · MCG',live:true},
+  {sport:'CRICKET',status:'final',teams:[['India','298/6'],['Sri Lanka','211/10']],note:'India won by 87 runs',live:false,final:true},
+  {sport:'FOOTBALL',status:'live',teams:[['Barcelona','2'],['Real Madrid','1']],note:'78\' · Camp Nou',live:true},
+  {sport:'FOOTBALL',status:'upcoming',teams:[['Mumbai City','–'],['Bengaluru FC','–']],note:'Kickoff 8:30 PM IST',live:false,upcoming:true},
+  {sport:'TENNIS',status:'upcoming',teams:[['Alcaraz','–'],['Sinner','–']],note:'Semi-final · Tomorrow',live:false,upcoming:true},
+];
+const sportsNewsBySport = {
+  cricket:[
+    {title:'India announces squad for upcoming series',src:'ESPNcricinfo',time:'20m',img:img('squad',300,200)},
+    {title:'Star batter reaches another career milestone',src:'Cricbuzz',time:'1h',img:img('milestone',300,200)},
+    {title:'Bowling attack dominates in practice match',src:'SportsPulse',time:'3h',img:img('bowling',300,200)},
+  ],
+  football:[
+    {title:'Transfer window closes with blockbuster signings',src:'Sky Sports',time:'2h',img:img('transfer',300,200)},
+    {title:'Manager hails squad depth ahead of big clash',src:'ESPN',time:'5h',img:img('manager',300,200)},
+  ],
+  tennis:[
+    {title:'Young star stuns top seed in thrilling tiebreak',src:'ATP Tour',time:'3h',img:img('tennis1',300,200)},
+  ],
+  basketball:[
+    {title:'Knicks edge Lakers in overtime thriller',src:'NBA',time:'4h',img:img('nba',300,200)},
+  ],
+  f1:[
+    {title:'Constructor battle intensifies ahead of final races',src:'Formula 1',time:'6h',img:img('f1',300,200)},
+  ],
+};
+
+/* =========================================================
+   STATE (persisted to localStorage)
+   ========================================================= */
+const state = {
+  bookmarks: new Set(JSON.parse(localStorage.getItem('dp_bookmarks')||'[]')),
+  watchlist: JSON.parse(localStorage.getItem('dp_watchlist')||'null') || marketsData.map(m=>m.name),
+  interests: new Set(JSON.parse(localStorage.getItem('dp_interests')||'["Technology","Cricket","Business","AI"]')),
+  weatherCity:'Bengaluru', unit:'°C',
+};
+const save = ()=>{localStorage.setItem('dp_bookmarks',JSON.stringify([...state.bookmarks]));localStorage.setItem('dp_watchlist',JSON.stringify(state.watchlist));localStorage.setItem('dp_interests',JSON.stringify([...state.interests]));};
+
+function toast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2000);
+}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+/* ============ HERO CAROUSEL ============ */
+let slideIdx=0,timer;
+function buildHero(){
+  const box=document.getElementById('heroCarousel');
+  box.innerHTML=news.hero.map((h,i)=>`
+    <div class="slide ${i===0?'active':''}" ${i===0?'aria-hidden="false"':'aria-hidden="true"'} role="group" aria-roledescription="slide">
+      <img src="${h.img}" alt="${esc(h.title)}" loading="${i===0?'eager':'lazy'}">
+      <div class="overlay"></div>
+      <div class="content">
+        <span class="cat-badge">${esc(h.category)}</span>
+        <h2>${esc(h.title)}</h2>
+        <p>${esc(h.desc)}</p>
+        <div class="meta"><span>${esc(h.source)}</span><span>•</span><span>${esc(h.time)}</span><span>•</span><span>${h.reactions} reactions</span></div>
+        <div class="eng-icons">
+          <button class="like" aria-label="Like">👍 ${Math.round(h.reactions/100)}</button>
+          <button aria-label="Comment">💬 48</button>
+          <button aria-label="Share">↗ Share</button>
+          <button class="bookmark-ctrl" aria-label="Bookmark">🔖</button>
+        </div>
+      </div>
+    </div>`).join('')
+    + `<button class="car-btn car-prev" aria-label="Previous slide">‹</button>
+       <button class="car-btn car-next" aria-label="Next slide">›</button>
+       <div class="dots">${news.hero.map((_,i)=>`<button class="${i===0?'active':''}" data-i="${i}" aria-label="Go to slide ${i+1}"></button>`).join('')}</div>`;
+}
+function heroGo(i,manual){
+  const slides=document.querySelectorAll('#heroCarousel .slide');
+  const dots=document.querySelectorAll('#heroCarousel .dots button');
+  slideIdx=(i+slides.length)%slides.length;
+  slides.forEach((s,j)=>s.classList.toggle('active',j===slideIdx));
+  dots.forEach((d,j)=>d.classList.toggle('active',j===slideIdx));
+  if(manual){clearInterval(timer);startHero();}
+}
+function startHero(){timer=setInterval(()=>heroGo(slideIdx+1),6000);}
+function wireHero(){
+  document.querySelector('#heroCarousel .car-prev').onclick=()=>heroGo(slideIdx-1,true);
+  document.querySelector('#heroCarousel .car-next').onclick=()=>heroGo(slideIdx+1,true);
+  document.querySelectorAll('#heroCarousel .dots button').forEach(d=>d.onclick=()=>heroGo(+d.dataset.i,true));
+  const box=document.getElementById('heroCarousel');
+  box.addEventListener('mouseenter',()=>clearInterval(timer));
+  box.addEventListener('mouseleave',startHero);
+  // like toggle
+  box.addEventListener('click',e=>{
+    const b=e.target.closest('.like');if(b){b.classList.toggle('on');b.textContent=(b.classList.contains('on')?'👍 ':'👍 ')+(b.classList.contains('on')?49:48);}
+    const bk=e.target.closest('.bookmark-ctrl');if(bk){bk.textContent='🔖';bk.classList.toggle('on');}
+  });
+}
+
+/* ============ FEATURED + TOP STORIES ============ */
+function buildFeatured(){
+  document.getElementById('featuredCol').innerHTML=news.featured.map(f=>`
+    <div class="feat-card">
+      <img src="${f.img}" alt="${esc(f.title)}" loading="lazy">
+      <div class="fc-body">
+        <span class="cat-badge" style="background:#333">${esc(f.category)}</span>
+        <h3>${esc(f.title)}</h3>
+        <div class="src-time"><b>${esc(f.source)}</b> • ${esc(f.time)}</div>
+      </div>
+    </div>`).join('');
+}
+function buildTopStories(){
+  document.getElementById('topStories').innerHTML=news.topStories.map((t,i)=>`
+    <div class="ts-row">
+      <div class="ts-logo" style="background:${t.color}">${t.logo}</div>
+      <div><h3>${esc(t.title)}</h3><div class="src-time">${esc(t.source)} &nbsp;•&nbsp; ${esc(t.time)}</div></div>
+    </div>`).join('');
+}
+function buildCommodities(){
+  const el=document.getElementById('commodityList');
+  el.innerHTML=commodities.map(c=>`
+    <div class="cm-row">
+      <div class="cm-icon" style="background:${c.color}">${c.icon}</div>
+      <div class="cm-info"><div class="cm-name">${c.name}</div><div class="cm-sub">${c.ticker}</div></div>
+      <div class="cm-spark">${sparkSVG(c.spark,c.up)}</div>
+      <div class="cm-right"><div class="cm-price">${c.price}</div><div class="cm-chg ${c.up?'up':'down'}">${c.chg}</div></div>
+    </div>`).join('');
+}
+
+/* ============ WATCHLIST ============ */
+function renderWatchlist(){
+  const el=document.getElementById('watchlist');
+  const data=marketsData.filter(m=>state.watchlist.includes(m.name));
+  el.innerHTML=data.map(m=>`
+    <div class="wl-item">
+      <div><div class="wl-name">${m.name}</div><div class="wl-val">${m.val}</div></div>
+      <div><span class="${m.up?'up':'down'}">${m.chg}</span><button class="wl-remove" data-n="${m.name}" aria-label="Remove ${m.name}">✕</button></div>
+    </div>`).join('');
+  el.querySelectorAll('.wl-remove').forEach(b=>b.onclick=()=>{state.watchlist=state.watchlist.filter(x=>x!==b.dataset.n);save();renderWatchlist();toast('Removed from watchlist');});
+}
+function wireWatchlist(){
+  document.getElementById('wlAddBtn').onclick=()=>{
+    const sel=document.getElementById('wlSelect');
+    const n=sel.value;
+    if(state.watchlist.includes(n)){toast('Already in watchlist');return;}
+    state.watchlist.push(n);save();renderWatchlist();toast('Added to watchlist');
+  };
+}
+
+/* ============ WEATHER ============ */
+function renderWeather(){
+  const w=weatherData,city=w.city;
+  const e=document.getElementById('weatherWidget');
+  const hi=w.hi,lo=w.lo;
+  e.innerHTML=`
+    <div class="w-city">📍 <span id="wCityName">${city}</span>
+      <button class="icon-btn" style="width:auto;height:auto;padding:2px 8px;font-size:12px" id="wSearchBtn">✏️</button>
+    </div>
+    <div class="w-now"><span style="font-size:44px">☀️</span><div><div class="w-temp">${w.temp}°${state.unit==='°C'?'C':'F'}</div><div class="w-desc">${w.desc}</div></div></div>
+    <div class="w-feel">Feels like ${w.feel}°</div>
+    <div class="w-hl"><span><b>H</b> ${w.hi}°</span><span><b>L</b> ${w.lo}°</span></div>
+    <div class="w-days">${w.days.map(d=>`<div class="w-day"><span>${d.d}</span><span class="emoji">${d.e}</span><b>${d.t}°</b></div>`).join('')}</div>
+    <div class="w-ctl">
+      <button id="unitBtn">Switch °C/°F</button>
+    </div>
+    <div class="w-city-sel" id="wCitySel">
+      <input id="wCityInput" placeholder="Search city e.g. Mumbai">
+      <button id="wCityGo">Set</button>
+    </div>`;
+  document.getElementById('wSearchBtn').onclick=()=>document.getElementById('wCitySel').classList.toggle('show');
+  document.getElementById('wCityGo').onclick=()=>{
+    const inp=document.getElementById('wCityInput').value.trim();
+    if(cityPool[inp]){weatherData.city=inp;weatherData.temp=cityPool[inp].t;weatherData.desc=cityPool[inp].d;renderWeather();toast('Location updated');}
+    else toast('City not found');
+  };
+  document.getElementById('unitBtn').onclick=()=>{state.unit=state.unit==='°C'?'°F':'°C';renderWeather();};
+}
+
+/* ============ TRENDING ============ */
+function buildTrending(){
+  document.getElementById('trendScroll').innerHTML=news.trending.map((t,i)=>`<span class="trend-pill">${i+1}. ${esc(t)}</span>`).join('');
+}
+
+/* ============ CATEGORY SECTIONS ============ */
+function buildSections(){
+  document.getElementById('newsSections').innerHTML=news.sections.map(s=>`
+    <div style="margin-bottom:30px">
+      <div class="sec-head"><h2>${s.title}</h2><a class="view-all" href="#">View all →</a></div>
+      <div class="grid-3">
+        ${s.items.map((a,i)=>`
+          <article class="article">
+            <div class="thumb"><img src="${a.img}" alt="${esc(a.title)}" loading="lazy"></div>
+            <div class="abody">
+              <span class="cat-badge" style="background:#333">${esc(a.cat)}</span>
+              <h3>${esc(a.title)}</h3>
+              <div class="cat-src-meta"><span><b>${esc(a.src)}</b> • ${esc(a.time)}</span><button class="bookmark ${state.bookmarks.has(a.title)?'on':''}" data-b="${esc(a.title)}" aria-label="Bookmark">${state.bookmarks.has(a.title)?'🔖':'🔖'}</button></div>
+            </div>
+          </article>`).join('')}
+      </div>
+    </div>`).join('');
+  document.querySelectorAll('.bookmark').forEach(b=>b.onclick=()=>{
+    const t=b.dataset.b;
+    if(state.bookmarks.has(t)){state.bookmarks.delete(t);b.classList.remove('on');toast('Removed bookmark');}
+    else{state.bookmarks.add(t);b.classList.add('on');toast('Bookmarked');}
+    save();
+  });
+}
+
+/* ============ SPORTS ============ */
+function renderScores(sport){
+  const el=document.getElementById('scoreScroll');
+  const list=scores.filter(s=>s.sport===sport.toUpperCase() || (sport!=='cricket' && s.sport.toLowerCase()===sport));
+  const filtered = sport==='cricket'?scores.filter(s=>s.sport==='CRICKET'):scores.filter(s=>s.sport.toLowerCase()===sport);
+  el.innerHTML=filtered.map(s=>{
+    const statusDot=s.live?'<span class="live-dot">🔴 LIVE</span>':s.final?'<span class="final-dot">🟢 FINAL</span>':'<span class="upcoming-dot">🟡 UPCOMING</span>';
+    const rows=s.teams.map((t,i)=>`
+      <div class="sc-team"><div style="display:flex;align-items:center;gap:8px"><span class="sc-logo">${t[0].slice(0,1)}</span><span>${t[0]}</span></div><b>${t[1]}</b></div>`).join('');
+    return `<div class="score-card"><div class="sc-top"><span>${s.sport}</span><span>${statusDot}</span></div>${rows}<div class="sc-status">${s.note}</div></div>`;
+  }).join('');
+  // sports news
+  const newsList=sportsNewsBySport[sport]||sportsNewsBySport.cricket;
+  document.getElementById('sportsNews').innerHTML=`<div class="grid-3">${newsList.map(a=>`
+    <article class="article">
+      <div class="thumb"><img src="${a.img}" alt="${esc(a.title)}" loading="lazy"></div>
+      <div class="abody"><h3>${esc(a.title)}</h3><div class="cat-src-meta"><span><b>${esc(a.src)}</b> • ${esc(a.time)}</span></div></div>
+    </article>`).join('')}</div>`;
+}
+function wireSports(){
+  document.querySelectorAll('#sportsTabs .tab').forEach(t=>t.onclick=()=>{
+    document.querySelectorAll('#sportsTabs .tab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');renderScores(t.dataset.sport);
+  });
+}
+
+/* ============ VIDEO ============ */
+function buildVideo(){
+  document.getElementById('videoScroll').innerHTML=news.videos.map(v=>`
+    <article class="article video-card">
+      <div class="thumb"><img src="${v.img}" alt="${esc(v.title)}" loading="lazy"><span class="play">▶</span><span class="dur">${v.dur}</span></div>
+      <div class="abody"><h3>${esc(v.title)}</h3><div class="cat-src-meta"><span><b>${esc(v.src)}</b> • ${esc(v.time)}</span></div></div>
+    </article>`).join('');
+}
+
+/* ============ RECOMMENDED ============ */
+function renderRecommended(){
+  const interestOrder=['Technology','Cricket','Business','AI','Movies','Travel'];
+  const matchers={Technology:/tech|ai|cloud|chip/i,AI:/ai|startup/i,Cricket:/cric/i,Business:/market|gold|chip|business/i,Movies:/movie|series|festival/i};
+  const active=[...state.interests];
+  const chosen=news.recommended.filter(a=>active.some(int=>matchers[int]&&matchers[int].test(a.title))).concat(news.recommended.slice(0,4));
+  const items=[...new Set(chosen)].slice(0,4);
+  document.getElementById('recommended').innerHTML=items.map(a=>`
+    <article class="article">
+      <div class="thumb"><img src="${a.img}" alt="${esc(a.title)}" loading="lazy"></div>
+      <div class="abody"><span class="cat-badge" style="background:#333">${esc(a.cat)}</span><h3>${esc(a.title)}</h3><div class="cat-src-meta"><span><b>${esc(a.src)}</b> • ${esc(a.time)}</span><button class="bookmark ${state.bookmarks.has(a.title)?'on':''}" data-b="${esc(a.title)}">🔖</button></div></div>
+    </article>`).join('');
+  // interest chips
+  interestOrder.forEach(int=>{
+    const ch=document.createElement('button');
+    ch.className='interest'+(state.interests.has(int)?' active':'');
+    ch.textContent=int;
+    ch.onclick=()=>{if(state.interests.has(int))state.interests.delete(int);else state.interests.add(int);ch.classList.toggle('active');save();renderRecommended();};
+    document.getElementById('interestChips').appendChild(ch);
+  });
+  document.querySelectorAll('#recommended .bookmark').forEach(b=>b.onclick=()=>{const t=b.dataset.b;if(state.bookmarks.has(t)){state.bookmarks.delete(t);toast('Removed');}else{state.bookmarks.add(t);toast('Bookmarked');}b.classList.toggle('on');save();});
+}
+
+/* ============ TICKER ============ */
+function buildTicker(){
+  const items=[...news.trending,...news.sections.flatMap(s=>s.items.map(i=>i.title))];
+  document.getElementById('tickerTrack').innerHTML=items.map(t=>`<span>${esc(t)}</span>`).join('')+items.map(t=>`<span>${esc(t)}</span>`).join('');
+  const track=document.getElementById('tickerTrack');let pos=0;
+  setInterval(()=>{if(document.hidden)return;pos-=1;track.style.transform=`translateX(${pos}px)`;if(pos<-track.scrollWidth/2)pos=0;},30);
+  document.getElementById('tickerClose').onclick=()=>document.getElementById('ticker').classList.add('closed');
+}
+
+/* ============ SEARCH ============ */
+let allArticles=[];
+function buildSearchIndex(){
+  allArticles=[...news.hero,...news.featured,...news.topStories,...news.sections.flatMap(s=>s.items),...news.recommended,...news.videos];
+}
+function openSearch(){document.getElementById('searchOverlay').classList.add('show');document.getElementById('searchInput').value='';document.getElementById('searchResults').innerHTML='<div style="padding:10px;color:var(--muted);font-size:13px">Trending: '+news.trending.slice(0,5).join(' · ')+'</div>';document.getElementById('searchInput').focus();}
+function closeSearch(){document.getElementById('searchOverlay').classList.remove('show');}
+document.getElementById('searchBtn').onclick=openSearch;
+document.getElementById('searchOverlay').addEventListener('click',e=>{if(e.target.id==='searchOverlay')closeSearch();});
+document.getElementById('searchInput').addEventListener('input',debounce(function(){
+  const q=this.value.trim().toLowerCase();
+  if(!q){document.getElementById('searchResults').innerHTML='';return;}
+  const res=allArticles.filter(a=>(a.title+' '+(a.category||'')+(a.source||'')).toLowerCase().includes(q));
+  document.getElementById('searchResults').innerHTML=res.length?res.slice(0,12).map(a=>`<div class="sr-item">${esc(a.title)}<br><small>${esc(a.category||'')} • ${esc(a.source||'')}</small></div>`).join(''):'<div style="padding:10px;color:var(--muted);font-size:13px">No results found</div>';
+},250));
+function debounce(fn,ms){let t;return function(){clearTimeout(t);t=setTimeout(()=>fn.call(this),ms);};}
+
+/* ============ THEME ============ */
+document.getElementById('themeBtn').onclick=()=>{
+  const html=document.documentElement;
+  const dark=html.dataset.theme==='dark';
+  html.dataset.theme=dark?'light':'dark';
+  document.getElementById('themeBtn').textContent=dark?'☀️':'🌙';
+};
+
+/* ============ HAMBURGER ============ */
+document.getElementById('hamburger').onclick=()=>document.getElementById('mobileMenu').classList.toggle('show');
+
+/* ============ AGENT 1 INTEGRATION ============ */
+let feedSupplyItems=[];
+function addSupplyChainCards(){
+  const sections=document.querySelectorAll('#newsSections > div');
+  const worldSec=[...sections].find(s=>{
+    const h=s.querySelector('h2');
+    return h&&h.textContent.includes('World');
+  });
+  if(!worldSec)return;
+  const grid=worldSec.querySelector('.grid-3');
+  // create the full-width result panel as sibling of the grid (not inside any card)
+  let panel=worldSec.querySelector('.agent1-panel');
+  if(!panel){
+    panel=document.createElement('div');
+    panel.className='agent1-panel';
+    panel.id='agent1ResultPanel';
+    worldSec.appendChild(panel);
+  }
+  loadSupplyChain(grid,panel);
+}
+async function loadSupplyChain(grid,panel){
+  try{
+    const resp=await fetch('/api/v1/feed');
+    const feed=await resp.json();
+    feedSupplyItems=feed.filter(x=>x.type==='analysis');
+    feedSupplyItems.forEach(si=>{
+      const card=document.createElement('article');
+      card.className='article analyzed';
+      card.style.cursor='pointer';
+      card.dataset.file=si.filename;
+      card.innerHTML=`
+        <div class="thumb"><img src="https://picsum.photos/seed/${esc(si.id)}/400/300" alt="" loading="lazy"><span class="cat-badge" style="position:absolute;top:10px;left:10px;background:var(--red)">\ud83d\udd34 ${esc(si.category)}</span></div>
+        <div class="abody">
+          <span class="cat-badge" style="background:#333">Realtime Risk Event</span>
+          <h3>${esc(si.headline)}</h3>
+          <div class="cat-src-meta"><span style="font-size:11px;color:var(--muted2)">\u25cf s/c \u2014 click to run Agent 1 risk analysis</span></div>
+        </div>`;
+      card.onclick=()=>runAgent1(card,si.filename,panel);
+      grid.appendChild(card);
+    });
+  }catch(e){/* server offline */}
+}
+async function runAgent1(card,filename,panel){
+  panel.innerHTML='<button class="agent1-close" onclick="this.parentElement.classList.remove(\'show\')" aria-label="Close">&times;</button><div style="display:flex;align-items:center"><span class="spinner"></span>Running Agent 1 risk analysis\u2026</div>';
+  panel.classList.add('show');
+  panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+  try{
+    const resp=await fetch('/api/v1/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({filename})});
+    if(!resp.ok)throw new Error('HTTP '+resp.status);
+    const d=await resp.json();
+    const ring=d.risk_level;
+    const act=d.activate_agent_2;
+    const reasons=(d.risk_reasoning||[]).map(r=>r.factor+' ('+r.impact+')').join(' \u00b7 ');
+    panel.innerHTML=`
+      <button class="agent1-close" onclick="this.parentElement.classList.remove('show')" aria-label="Close">&times;</button>
+      <div class="res-head">
+        <div class="ring ${ring}">${d.risk_score}<small>/100</small></div>
+        <div>
+          <div style="font-weight:800;font-size:17px">${ring} RISK</div>
+          <div style="font-size:13px;color:var(--muted)">Disruption \u2248 ${d.estimated_disruption_days} days \u00b7 Prob. ${d.supply_disruption_probability}% \u00b7 Conf. ${d.confidence_score}</div>
+          <div style="margin-top:6px">Agent 2: <span class="pill ${act?'yes':'no'}">${act?'ACTIVATE':'NOT ACTIVATED'}</span></div>
+        </div>
+      </div>
+      <div class="res-kv"><b>Event</b><span>${esc(card.querySelector('h3')?.textContent||filename)}</span><b>Impact</b><span>${d.business_impact.procurement_risk} procurement \u00b7 ${d.business_impact.price_escalation_risk} price \u00b7 ${d.business_impact.inventory_shortage_risk} inventory</span></div>
+      <div class="res-summary" style="font-size:14px;margin-top:10px">${esc(d.summary)}</div>
+      <div class="res-summary" style="color:var(--muted2)">Reasoning: ${esc(reasons)}</div>
+      <div style="margin-top:10px;font-size:13px;color:var(--muted)"><b>Actions:</b> ${(d.recommended_actions||[]).map(a=>esc(a)).join(' \u00b7 ')}</div>`;
+  }catch(e){
+    panel.innerHTML='<button class="agent1-close" onclick="this.parentElement.classList.remove(\'show\')" aria-label="Close">&times;</button><div style="color:var(--red);font-size:13px">Analysis failed (is the server + API reachable?). Click again to retry.</div>';
+  }
+}
+
+/* ============ INIT ============ */
+(function init(){
+  buildSearchIndex();
+  buildHero();wireHero();startHero();
+  buildFeatured();buildTopStories();buildCommodities();
+  renderWatchlist();wireWatchlist();
+  renderWeather();
+  buildTrending();
+  buildSections();
+  renderScores('cricket');wireSports();
+  buildVideo();
+  renderRecommended();
+  buildTicker();
+  // after sections render, add supply-chain cards to World grid
+  setTimeout(addSupplyChainCards,100);
+  document.getElementById('newsForm').addEventListener('submit',e=>{e.preventDefault();toast('Subscribed! Check your inbox.');e.target.reset();});
+  document.getElementById('bookmarkNavBtn').onclick=()=>toast(state.bookmarks.size?`${state.bookmarks.size} saved articles`:'No saved articles yet');
+  document.getElementById('settingsBtn').onclick=()=>{document.getElementById('interestChips').scrollIntoView({behavior:'smooth'});};
+  window.addEventListener('keydown',e=>{if(e.key==='Escape')closeSearch();});
+})();
+</script>
+</body>
+</html>

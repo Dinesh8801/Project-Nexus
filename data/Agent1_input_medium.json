@@ -1,0 +1,23 @@
+{
+  "event_id": "EVT-2026-002",
+  "event_timestamp": "2026-09-20T06:00:00Z",
+  "event_type": "Port Strike",
+  "event_name": "Tema Port Dockworker Strike",
+  "country": "Ghana",
+  "affected_regions": [
+    "Tema",
+    "Accra"
+  ],
+  "severity": "MODERATE",
+  "source": "Ghana Ports and Harbours Authority",
+  "description": "Planned indefinite strike by dockworkers at Tema Port. Container and bulk cargo handling may be reduced by up to 40%. The port authority expects normal operations to resume within 2-3 days as negotiations progress.",
+  "expected_impact": {
+    "port_disruption": true,
+    "road_disruption": false,
+    "power_outage_risk": false,
+    "manufacturing_disruption": false
+  },
+  "affected_materials": [
+    "Cashew Nuts"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "event_id": "EVT-2026-005",
+  "event_timestamp": "2026-09-25T01:40:00Z",
+  "event_type": "Earthquake",
+  "event_name": "M6.9 Earthquake off Gujarat Coast",
+  "country": "India",
+  "affected_regions": [
+    "Mundra",
+    "Gandhidham",
+    "Jamnagar"
+  ],
+  "severity": "SEVERE",
+  "source": "National Centre for Seismology",
+  "description": "Strong earthquake caused damage at Mundra port, the largest private cargo terminal. Cranes and berths damaged; parts of the power grid are down. Vessel schedules are suspended for an estimated 6-8 days.",
+  "expected_impact": {
+    "port_disruption": true,
+    "road_disruption": true,
+    "power_outage_risk": true,
+    "manufacturing_disruption": true
+  },
+  "affected_materials": [
+    "Cashew Nuts"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "event_id": "EVT-2026-006",
+  "event_timestamp": "2026-09-28T00:00:00Z",
+  "event_type": "Drought",
+  "event_name": "Severe Drought in Southern Tanzania",
+  "country": "Tanzania",
+  "affected_regions": [
+    "Mtwara",
+    "Lindi",
+    "Ruvuma",
+    "Tabora",
+    "Mbeya"
+  ],
+  "severity": "SEVERE",
+  "source": "Tanzania Meteorological Authority",
+  "description": "Seasonal rains have failed across the major cashew growing belts. Crop yields are projected down 30-45%. The harvest window is expected to extend by up to one month while yield losses are assessed.",
+  "expected_impact": {
+    "port_disruption": false,
+    "road_disruption": false,
+    "power_outage_risk": false,
+    "manufacturing_disruption": false
+  },
+  "affected_materials": [
+    "Cashew Nuts"
+  ]
+}

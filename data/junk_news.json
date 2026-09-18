@@ -1,0 +1,135 @@
+[
+  {
+    "id": "j-01",
+    "headline": "Apple unveils iPhone 18 Pro with a foldable display and 48-hour battery",
+    "category": "Tech",
+    "source": "The Verge",
+    "time": "2 hours ago"
+  },
+  {
+    "id": "j-02",
+    "headline": "Tesla's new EV roadster promises 0-60 in under one second",
+    "category": "Autos",
+    "source": "Road & Track",
+    "time": "3 hours ago"
+  },
+  {
+    "id": "j-03",
+    "headline": "PlayStation 6 announcement leaks ahead of expected reveal",
+    "category": "Gaming",
+    "source": "IGN",
+    "time": "1 hour ago"
+  },
+  {
+    "id": "j-04",
+    "headline": "Netflix confirms a live-action adaptation of a hit game series",
+    "category": "Entertainment",
+    "source": "Variety",
+    "time": "4 hours ago"
+  },
+  {
+    "id": "j-05",
+    "headline": "Samsung's new 200MP camera sensor sets a smartphone photography benchmark",
+    "category": "Tech",
+    "source": "GSMArena",
+    "time": "5 hours ago"
+  },
+  {
+    "id": "j-06",
+    "headline": "BMW launches a compact electric SUV aimed at first-time EV buyers",
+    "category": "Autos",
+    "source": "Car and Driver",
+    "time": "6 hours ago"
+  },
+  {
+    "id": "j-07",
+    "headline": "Steam breaks its own record with 40 million concurrent players",
+    "category": "Gaming",
+    "source": "PC Gamer",
+    "time": "2 hours ago"
+  },
+  {
+    "id": "j-08",
+    "headline": "Top movie studio announces a slate of 12 upcoming films for next year",
+    "category": "Entertainment",
+    "source": "The Hollywood Reporter",
+    "time": "7 hours ago"
+  },
+  {
+    "id": "j-09",
+    "headline": "Google's foldable Pixel device gets a surprise price drop this holiday",
+    "category": "Tech",
+    "source": "Android Authority",
+    "time": "3 hours ago"
+  },
+  {
+    "id": "j-10",
+    "headline": "Toyota's hydrogen fuel-cell concept generates buzz at the auto expo",
+    "category": "Autos",
+    "source": "MotorTrend",
+    "time": "5 hours ago"
+  },
+  {
+    "id": "j-11",
+    "headline": "New open-world RPG tops the charts within 24 hours of release",
+    "category": "Gaming",
+    "source": "GameSpot",
+    "time": "1 hour ago"
+  },
+  {
+    "id": "j-12",
+    "headline": "A-list celebrity sparks social media frenzy with surprise tour announcement",
+    "category": "Entertainment",
+    "source": "TMZ",
+    "time": "8 hours ago"
+  },
+  {
+    "id": "j-13",
+    "headline": "OnePlus teases a budget flagship with mmWave 5G for the masses",
+    "category": "Tech",
+    "source": "XDA Developers",
+    "time": "4 hours ago"
+  },
+  {
+    "id": "j-14",
+    "headline": "Ford announces plans to double its charging network next year",
+    "category": "Autos",
+    "source": "EV Pulse",
+    "time": "6 hours ago"
+  },
+  {
+    "id": "j-15",
+    "headline": "Nintendo drops a surprise demo for its next big console exclusive",
+    "category": "Gaming",
+    "source": "Kotaku",
+    "time": "2 hours ago"
+  },
+  {
+    "id": "j-16",
+    "headline": "Streaming services raise subscription prices across the board",
+    "category": "Entertainment",
+    "source": "CNBC",
+    "time": "9 hours ago"
+  },
+  {
+    "id": "j-17",
+    "headline": "OnePlus's new earbuds challenge Apple for noise-cancelling crown",
+    "category": "Tech",
+    "source": "Pocket-lint",
+    "time": "3 hours ago"
+  },
+  {
+    "id": "j-18",
+    "headline": "Mercedes unveils an autonomous-driving concept that needs no steering wheel",
+    "category": "Autos",
+    "source": "Autoblog",
+    "time": "7 hours ago"
+  },
+  {
+    "id": "j-19",
+    "headline": "Esports league announces a record $25 million prize pool for next season",
+    "category": "Gaming",
+    "source": "Dexerto",
+    "time": "5 hours ago"
+  }
+]

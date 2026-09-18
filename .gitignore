@@ -1,0 +1,21 @@
+# secrets
+.env
+
+# python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# editor / os
+.vscode/
+.DS_Store
+
+# databricks / runtime artifacts
+.workspace/
+.databricks/
+target/
+
+# generated analysis outputs
+data/output/
+data/Agent1_output*.json

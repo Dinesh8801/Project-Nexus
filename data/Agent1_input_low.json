@@ -1,0 +1,22 @@
+{
+  "event_id": "EVT-2026-003",
+  "event_timestamp": "2026-09-22T10:00:00Z",
+  "event_type": "Road Maintenance",
+  "event_name": "Temporary Bridge Works on Mombasa Road",
+  "country": "Kenya",
+  "affected_regions": [
+    "Mombasa"
+  ],
+  "severity": "MINOR",
+  "source": "Kenya National Highway Authority",
+  "description": "Scheduled lane closures for central median repairs on the approach road. Minor temporary delays expected; operations return to normal the same day.",
+  "expected_impact": {
+    "port_disruption": false,
+    "road_disruption": true,
+    "power_outage_risk": false,
+    "manufacturing_disruption": false
+  },
+  "affected_materials": [
+    "Steel Billets"
+  ]
+}

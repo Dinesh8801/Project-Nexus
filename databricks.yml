@@ -1,0 +1,30 @@
+bundle:
+  name: agent1_risk_detection
+
+workspace:
+  file_path: /Shared/agent1
+
+resources:
+  apps:
+    agent1_risk_detection:
+      name: agent1-risk-detection
+      source_code_path: ./
+      config:
+        command:
+          - uvicorn
+          - app:app
+          - "--host"
+          - "0.0.0.0"
+          - "--port"
+          - "8000"
+        env:
+          - name: GROQ_API_KEY
+            value: "{{secrets/agent-scope/groq_api_key}}"
+          - name: GEMINI_API_KEY
+            value: "{{secrets/agent-scope/gemini_api_key}}"
+          - name: LLM_ENABLED
+            value: "true"
+          - name: LLM_PRIMARY_MODEL
+            value: "openai/gpt-oss-120b"
+          - name: LLM_FALLBACK_MODEL
+            value: "gemini-3.6-flash"
