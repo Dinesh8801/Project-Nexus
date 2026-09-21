@@ -88,17 +88,19 @@ def feed() -> list:
             ev = _load_input(p)
         except Exception:
             continue
-        supply.append({
+        rel = str(p.relative_to(BASE_DIR))
+        item = {
             "type": "analysis",
             "id": ev.event_id,
             "headline": f"{ev.event_name}: {ev.event_type} in {ev.country}",
             "category": ev.event_type,
             "source": ev.source or "Agency",
             "time": ev.event_timestamp.strftime("%b %d, %Y"),
-            "filename": str(p.relative_to(BASE_DIR)),
+            "filename": rel,
             "severity": ev.severity,
             "event_name": ev.event_name,
-        })
+        }
+        supply.append(item)
 
     # Interleave: junk, analysis, junk, junk, analysis, ...
     merged: list[dict] = []

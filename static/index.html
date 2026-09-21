@@ -116,7 +116,7 @@
   .cta:hover{filter:brightness(1.1)}
 
   /* Article cards */
-  .article{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s}
+  .article{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s;cursor:pointer}
   .article:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
   .article .thumb{position:relative;overflow:hidden;aspect-ratio:16/10;background:linear-gradient(135deg,#3a3a3a,#242424)}
   .article .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
@@ -144,6 +144,11 @@
   /* Agent 1 result panel (full width, below grid) */
   .agent1-panel{display:none;margin-top:16px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;animation:fade .3s;border-top:3px solid var(--accent)}
   .agent1-panel.show{display:block}
+  /* Result modal popup */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;z-index:1000;opacity:0;visibility:hidden;transition:opacity .2s;padding:20px}
+  .modal-overlay.show{opacity:1;visibility:visible}
+  .modal-box{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);max-width:560px;width:100%;max-height:85vh;overflow:auto;padding:20px;border-top:3px solid var(--accent);transform:translateY(10px);transition:transform .2s}
+  .modal-overlay.show .modal-box{transform:translateY(0)}
   .agent1-close{background:none;border:none;color:var(--muted);font-size:22px;float:right;margin:-4px -4px 0 0}
 
   /* featured large + small list mix */
@@ -520,6 +525,13 @@
 </div>
 
 <div id="toast"></div>
+
+<!-- RESULT MODAL (Agent 1 / NO RISK popup) -->
+<div class="modal-overlay" id="resultModal">
+  <div class="modal-box" role="dialog" aria-label="Risk assessment result">
+    <div class="modal-body" id="resultModalBody"></div>
+  </div>
+</div>
 
 <script>
 /* =========================================================
@@ -925,6 +937,13 @@ document.getElementById('themeBtn').onclick=()=>{
 document.getElementById('hamburger').onclick=()=>document.getElementById('mobileMenu').classList.toggle('show');
 
 /* ============ AGENT 1 INTEGRATION ============ */
+function openResultModal(html){
+  document.getElementById('resultModalBody').innerHTML=html;
+  document.getElementById('resultModal').classList.add('show');
+}
+function closeResultModal(){
+  document.getElementById('resultModal').classList.remove('show');
+}
 let feedSupplyItems=[];
 function addSupplyChainCards(){
   const sections=document.querySelectorAll('#newsSections > div');
@@ -934,17 +953,9 @@ function addSupplyChainCards(){
   });
   if(!worldSec)return;
   const grid=worldSec.querySelector('.grid-3');
-  // create the full-width result panel as sibling of the grid (not inside any card)
-  let panel=worldSec.querySelector('.agent1-panel');
-  if(!panel){
-    panel=document.createElement('div');
-    panel.className='agent1-panel';
-    panel.id='agent1ResultPanel';
-    worldSec.appendChild(panel);
-  }
-  loadSupplyChain(grid,panel);
+  loadSupplyChain(grid);
 }
-async function loadSupplyChain(grid,panel){
+async function loadSupplyChain(grid){
   try{
     const resp=await fetch('/api/v1/feed');
     const feed=await resp.json();
@@ -961,15 +972,13 @@ async function loadSupplyChain(grid,panel){
           <h3>${esc(si.headline)}</h3>
           <div class="cat-src-meta"><span style="font-size:11px;color:var(--muted2)">\u25cf s/c \u2014 click to run Agent 1 risk analysis</span></div>
         </div>`;
-      card.onclick=()=>runAgent1(card,si.filename,panel);
+      card.onclick=()=>runAgent1(card,si.filename);
       grid.appendChild(card);
     });
   }catch(e){/* server offline */}
 }
-async function runAgent1(card,filename,panel){
-  panel.innerHTML='<button class="agent1-close" onclick="this.parentElement.classList.remove(\'show\')" aria-label="Close">&times;</button><div style="display:flex;align-items:center"><span class="spinner"></span>Running Agent 1 risk analysis\u2026</div>';
-  panel.classList.add('show');
-  panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+async function runAgent1(card,filename){
+  openResultModal('<button class="agent1-close" onclick="closeResultModal()" aria-label="Close">&times;</button><div style="display:flex;align-items:center;gap:12px"><span class="spinner"></span><span>Running Agent 1 risk analysis\u2026</span></div>');
   try{
     const resp=await fetch('/api/v1/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({filename})});
     if(!resp.ok)throw new Error('HTTP '+resp.status);
@@ -977,8 +986,8 @@ async function runAgent1(card,filename,panel){
     const ring=d.risk_level;
     const act=d.activate_agent_2;
     const reasons=(d.risk_reasoning||[]).map(r=>r.factor+' ('+r.impact+')').join(' \u00b7 ');
-    panel.innerHTML=`
-      <button class="agent1-close" onclick="this.parentElement.classList.remove('show')" aria-label="Close">&times;</button>
+    openResultModal(`
+      <button class="agent1-close" onclick="closeResultModal()" aria-label="Close">&times;</button>
       <div class="res-head">
         <div class="ring ${ring}">${d.risk_score}<small>/100</small></div>
         <div>
@@ -990,10 +999,54 @@ async function runAgent1(card,filename,panel){
       <div class="res-kv"><b>Event</b><span>${esc(card.querySelector('h3')?.textContent||filename)}</span><b>Impact</b><span>${d.business_impact.procurement_risk} procurement \u00b7 ${d.business_impact.price_escalation_risk} price \u00b7 ${d.business_impact.inventory_shortage_risk} inventory</span></div>
       <div class="res-summary" style="font-size:14px;margin-top:10px">${esc(d.summary)}</div>
       <div class="res-summary" style="color:var(--muted2)">Reasoning: ${esc(reasons)}</div>
-      <div style="margin-top:10px;font-size:13px;color:var(--muted)"><b>Actions:</b> ${(d.recommended_actions||[]).map(a=>esc(a)).join(' \u00b7 ')}</div>`;
+      <div style="margin-top:10px;font-size:13px;color:var(--muted)"><b>Actions:</b> ${(d.recommended_actions||[]).map(a=>esc(a)).join(' \u00b7 ')}</div>`);
   }catch(e){
-    panel.innerHTML='<button class="agent1-close" onclick="this.parentElement.classList.remove(\'show\')" aria-label="Close">&times;</button><div style="color:var(--red);font-size:13px">Analysis failed (is the server + API reachable?). Click again to retry.</div>';
+    openResultModal('<button class="agent1-close" onclick="closeResultModal()" aria-label="Close">&times;</button><div style="color:var(--red);font-size:13px">Analysis failed (is the server + API reachable?). Close and click again to retry.</div>');
   }
+}
+
+/* ============ MAKE EVERY NEWS CARD CLICKABLE ============ */
+/* supply-chain stories -> run Agent 1; everything else -> NO RISK */
+let clickFeedCache=null;
+async function ensureFeedCache(){
+  if(!clickFeedCache){
+    const resp=await fetch('/api/v1/feed');
+    clickFeedCache=(await resp.json()).filter(x=>x.type==='analysis');
+  }
+  return clickFeedCache;
+}
+function normText(s){return (s||'').toLowerCase().replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim();}
+function showNoRisk(card){
+  const title=(card.querySelector('h3')?.textContent||'This story').trim();
+  const cat=(card.querySelector('.cat-badge')?.textContent||'News').trim();
+  openResultModal(`
+    <button class="agent1-close" onclick="closeResultModal()" aria-label="Close">&times;</button>
+    <div class="res-head">
+      <div class="ring LOW">0<small>/100</small></div>
+      <div>
+        <div style="font-weight:800;font-size:17px">NO RISK</div>
+        <div style="font-size:13px;color:var(--muted)">Not a monitored supply chain event</div>
+      </div>
+    </div>
+    <div class="res-kv"><b>News</b><span>${esc(title)}</span><b>Category</b><span>${esc(cat)}</span></div>
+    <div class="res-summary" style="font-size:14px;margin-top:10px">No supply chain risk detected. This story does not indicate any disruption to tracked supply chain routes or commodities, and no monitoring action is required at this time.</div>`);
+}
+async function wireNewsClicks(){
+  let analysis=[];
+  try{analysis=await ensureFeedCache();}catch(e){analysis=[];}
+  document.addEventListener('click',async e=>{
+    if(e.target.closest('button, a, input, select'))return; // let bookmarks/links behave normally
+    const card=e.target.closest('.article');
+    if(!card)return;
+    if(card.onclick)return; // World-grid supply-chain cards already wired
+    const title=normText(card.querySelector('h3')?.textContent||'');
+    const hit=analysis.find(a=>
+      title.includes(normText(a.event_name)) || title.includes(normText(a.headline)) ||
+      normText(a.headline).includes(title) || normText(a.event_name).includes(title)
+    );
+    if(hit)runAgent1(card,hit.filename);
+    else showNoRisk(card);
+  });
 }
 
 /* ============ INIT ============ */
@@ -1011,10 +1064,12 @@ async function runAgent1(card,filename,panel){
   buildTicker();
   // after sections render, add supply-chain cards to World grid
   setTimeout(addSupplyChainCards,100);
+  wireNewsClicks();
   document.getElementById('newsForm').addEventListener('submit',e=>{e.preventDefault();toast('Subscribed! Check your inbox.');e.target.reset();});
   document.getElementById('bookmarkNavBtn').onclick=()=>toast(state.bookmarks.size?`${state.bookmarks.size} saved articles`:'No saved articles yet');
   document.getElementById('settingsBtn').onclick=()=>{document.getElementById('interestChips').scrollIntoView({behavior:'smooth'});};
-  window.addEventListener('keydown',e=>{if(e.key==='Escape')closeSearch();});
+  document.getElementById('resultModal').addEventListener('click',e=>{if(e.target.id==='resultModal')closeResultModal();});
+  window.addEventListener('keydown',e=>{if(e.key==='Escape'){closeSearch();closeResultModal();}});
 })();
 </script>
 </body>
