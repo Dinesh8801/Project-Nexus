@@ -75,42 +75,67 @@ results = json.loads(dbutils.fs.head("/FileStore/agent1/outputs/index.json"))
 
 The MSN-style "Times of Tieto" dashboard and the `/api/v1/analyze` REST endpoint run
 as a **Databricks App** — clicking a supply-chain card triggers Agent 1 live, entirely
-hosted on Databricks.
+hosted on Databricks. Prereqs: a **Unity-Catalog-enabled** workspace and **Databricks
+Apps enabled** by the admin. Databricks Apps uses managed compute (no cluster needed).
 
-## 1. Get the code onto Databricks (one time)
-Easiest and keeps it git-versioned:
-- **Create → Git folder → Link to remote repository** → paste the repo URL.
-- Open the folder, which contains `agent1/`.
-Once cloned, everything (`server.py`, `app.py`, `databricks.yml`, `models/`, `services/`,
-`static/`, `data/`) lives on Databricks. Nothing runs from your laptop.
+## 1. One-time project files (already in the repo — required for Apps)
+| File | Purpose |
+|---|---|
+| `app.py` | Entry point: `python app.py` launches uvicorn on `DATABRICKS_APP_PORT` |
+| `app.yaml` | Runtime command + non-secret env vars (`LLM_ENABLED`, models) |
+| `requirements.txt` | Python deps installed automatically at deploy (pip, Python 3.11). FastAPI/uvicorn are pre-installed anyway |
+| `databricks.yml` | Optional bundle metadata (not needed for the UI/Git flow) |
 
-## 2. Files already in the repo (done)
-- `app.py` — one-line Databricks entry point → `from server import app`
-- `databricks.yml` — bundle config; reads keys from `agent-scope` secrets
+## 2. Deploy from the UI (recommended — no local CLI needed)
 
-## 3. Deploy (requires Databricks CLI)
+1. **Publish this code to a Git repo** (GitHub/GitLab/Bitbucket) — e.g. the `Project-Nexus`
+   repo (branch `main`). This is what you deploy from.
+2. **Link the repo in the workspace**: `Create → Git folder → Link to remote repository`,
+   paste the repo URL, branch `main`. (First time, Databricks asks to connect GitHub.)
+3. **Create the API-key secrets once** — in any notebook cell (or CLI):
+   ```python
+   dbutils.secrets.createScope("agent-scope")
+   dbutils.secrets.put("agent-scope", "groq_api_key", "gsk_...")
+   dbutils.secrets.put("agent-scope", "gemini_api_key", "AIza...")
+   ```
+4. **Create the app**: app switcher (top-left) → `Databricks Apps` → `Create app` →
+   `Create custom app`. Name it `agent1-risk-detection`. For source choose the git
+   folder (or `From Git`) → branch `main`.
+5. **Attach the secret keys**: on the app page open **Environment variables**, add
+   `GROQ_API_KEY` and `GEMINI_API_KEY`, each via "Add from Databricks secret" →
+   scope `agent-scope` → key `groq_api_key` / `gemini_api_key`. (`app.yaml` `env` is
+   applied automatically on deploy.)
+6. **Deploy**, then **Run**. Databricks builds the image (`pip install -r
+   requirements.txt`) and starts the app.
+
+## 3. Verify
+You get a public URL like `https://agent1-risk-detection.<workspace>.cloud.databricksapps.com`:
 ```bash
-pip install databricks-cli
-databricks configure --host https://<your-workspace-url>
-
-cd agent1                      # on your machine OR on a cluster via terminal
-databricks bundle deploy
-databricks bundle run agent1_risk_detection
-```
-
-## 4. Verify
-You get a URL like `https://agent1-risk-detection.<workspace>.databricksapps.com`
-```bash
-curl https://agent1-risk-detection.<workspace>/health
-curl -X POST https://agent1-risk-detection.<workspace>/api/v1/analyze \
+curl https://agent1-risk-detection.<workspace>.cloud.databricksapps.com/health
+curl -X POST https://agent1-risk-detection.<workspace>.cloud.databricksapps.com/api/v1/analyze \
   -H "Content-Type: application/json" -d @data/Agent1_input.json
 ```
-Open the app URL in a browser for the dashboard demo.
+Open the app URL in a browser for the dashboard demo (click any supply-chain card →
+live Agent 1 run).
 
-## Updates later
+## 4. Updates later
+Edit code → `git push` → on the app page **Deploy** (re-run after deploy).
+
+## 5. Alternative: deploy with the Databricks CLI (config-as-code)
 ```bash
-databricks bundle deploy && databricks bundle run agent1_risk_detection
+# Windows: winget install Databricks.DatabricksCLI   (or curl the installer)
+databricks auth login --host https://<your-workspace-url>   # browser SSO
+databricks apps create agent1-risk-detection
+databricks workspace import-dir . /Workspace/Users/<you>/apps/agent1-risk-detection
+databricks apps deploy agent1-risk-detection \
+  --source-code-path /Workspace/Users/<you>/apps/agent1-risk-detection
+databricks apps get agent1-risk-detection   # status + URL
 ```
+Notes:
+- The `env` block for secrets like `valueFrom:` requires the secret to be attached
+  to the app as a *resource* (app's **Resources** tab), matching the name you use.
+- `app.yaml` (not `databricks.yml config:`) owns runtime env — never reference
+  `{{secrets/...}}` inside `app.yaml` `value:`. Use the secret picker instead.
 
 ---
 

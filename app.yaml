@@ -1,0 +1,14 @@
+# Databricks Apps runtime configuration (see Databricks docs: "Configure Databricks
+# app execution with app.yaml"). Command runs `python app.py`, which launches
+# uvicorn on the port injected by the platform.
+command:
+  - python
+  - app.py
+
+env:
+  - name: LLM_ENABLED
+    value: "true"
+  - name: LLM_PRIMARY_MODEL
+    value: openai/gpt-oss-120b
+  - name: LLM_FALLBACK_MODEL
+    value: gemini-3.6-flash
