@@ -16,6 +16,9 @@ __pycache__/
 .databricks/
 target/
 
+# Databricks entry point is teammate-managed (kept local-only)
+app.py
+
 # generated analysis outputs
 data/output/
 data/Agent1_output*.json
