@@ -1,0 +1,25 @@
+{
+  "event_id": "EVT-2026-008",
+  "event_timestamp": "2026-09-24T06:00:00Z",
+  "event_type": "Landslide",
+  "event_name": "Landslide blocks key transport corridor in central Vietnam",
+  "country": "Vietnam",
+  "affected_regions": [
+    "Central Highlands",
+    "Da Nang",
+    "Quang Nam"
+  ],
+  "severity": "SEVERE",
+  "source": "Vietnam National Disaster Management Authority",
+  "description": "A series of landslides in the Central Highlands has blocked National Highway QL-14B, a primary route for cashew and pepper shipments heading to Da Nang port. Heavy rainfall is expected to slow clearing work; full restoration is estimated at 5-7 days.",
+  "expected_impact": {
+    "port_disruption": false,
+    "road_disruption": true,
+    "power_outage_risk": true,
+    "manufacturing_disruption": false
+  },
+  "affected_materials": [
+    "Cashew Nuts",
+    "Black Pepper"
+  ]
+}

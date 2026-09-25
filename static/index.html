@@ -537,7 +537,32 @@
 /* =========================================================
    DATA LAYER — mock datasets. Swap with real API services later.
    ========================================================= */
-const img = (seed,w,h)=>`https://picsum.photos/seed/${seed}/${w||400}/${h||300}`;
+const IMG_KW={
+  aiStartup:'technology',markets:'stockmarket',ev:'electriccar',
+  summit:'conference',economic:'stockmarket',
+  indcric:'cricket',indpol:'government',metro:'train',
+  typhoonsuv:'suv',avalancheice:'icecream',landslidewin:'election',
+  phone:'smartphone',aifunding:'startup',cloud:'cloudcomputing',
+  record:'stockmarket',emerging:'stockmarket',funding:'startup',
+  movie:'cinema',series:'cinema',festival:'musicfestival',
+  aiprod:'technology',auction:'cricket',gold:'gold',cloudtrend:'cloudcomputing',chips:'semiconductor',
+  vid1:'stockmarket',vid2:'cinema',vid3:'car',vid4:'startup',
+  bowling:'cricket',milestone:'cricket',squad:'cricket',transfer:'football',manager:'football',
+  tennis1:'tennis',nba:'basketball',f1:'formula1',
+  'EVT-2026-001':'storm','EVT-2026-002':'port','EVT-2026-003':'construction',
+  'EVT-2026-004':'cybersecurity','EVT-2026-005':'earthquake','EVT-2026-006':'drought',
+  'EVT-2026-007':'avalanche','EVT-2026-008':'landslide','EVT-2026-009':'customs'
+};
+// Themed image helper: serves the bundled real photo for the story topic.
+// Photos live in static/img/ (committed to git) so they work on any host
+// (local dev and Databricks Apps) with no runtime internet dependency.
+const img = (seed,w,h)=>{
+  const kw=IMG_KW[seed];
+  const W=w||400,H=h||300;
+  return kw
+    ? `static/img/${kw}.jpg`
+    : `https://picsum.photos/seed/${seed}/${W}/${H}`;
+};
 
 const JSONFeed = {
   type:'analysis', category:'Supply Chain', source:'Agent 1',
@@ -567,9 +592,9 @@ const news = {
       {title:'City metro network expansion approved',cat:'Infra',src:'TOI',time:'3h',img:img('metro',400,300)},
     ]},
     {title:'🌍 World',items:[
-      {title:'Climate summit concludes with new pledges',cat:'World',src:'Al Jazeera',time:'40m',img:img('climatesummit',400,300)},
-      {title:'Supply chains brace for peak shipping season',cat:'World',src:'The Hindu',time:'2h',img:img('shipping',400,300)},
-      {title:'Central banks signal shift in policy stance',cat:'Economy',src:'Bloomberg',time:'4h',img:img('centralbank',400,300)},
+      {title:'Toyota unveils "Typhoon" edition off-road SUV in Vietnam',cat:'Autos',src:'MotorTrend',time:'50m',img:img('typhoonsuv',400,300)},
+      {title:'"Avalanche" ice cream scoops up record summer sales',cat:'Business',src:'CNBC',time:'1h',img:img('avalancheice',400,300)},
+      {title:'Landslide victory for ruling party in state elections',cat:'Politics',src:'BBC',time:'2h',img:img('landslidewin',400,300)},
     ]},
     {title:'⚡ Technology',items:[
       {title:'Latest flagship smartphone raises the bar',cat:'Gadgets',src:'The Verge',time:'30m',img:img('phone',400,300)},
@@ -966,7 +991,7 @@ async function loadSupplyChain(grid){
       card.style.cursor='pointer';
       card.dataset.file=si.filename;
       card.innerHTML=`
-        <div class="thumb"><img src="https://picsum.photos/seed/${esc(si.id)}/400/300" alt="" loading="lazy"><span class="cat-badge" style="position:absolute;top:10px;left:10px;background:var(--red)">\ud83d\udd34 ${esc(si.category)}</span></div>
+        <div class="thumb"><img src="${img(si.id,400,300)}" alt="" loading="lazy"><span class="cat-badge" style="position:absolute;top:10px;left:10px;background:var(--red)">\ud83d\udd34 ${esc(si.category)}</span></div>
         <div class="abody">
           <span class="cat-badge" style="background:#333">Realtime Risk Event</span>
           <h3>${esc(si.headline)}</h3>

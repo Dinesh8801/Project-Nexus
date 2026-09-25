@@ -1,0 +1,26 @@
+{
+  "event_id": "EVT-2026-009",
+  "event_timestamp": "2026-09-24T09:00:00Z",
+  "event_type": "Import Tariff",
+  "event_name": "India imposes 100% tariff on imports from Vietnam",
+  "country": "India",
+  "affected_regions": [
+    "Mumbai",
+    "Chennai",
+    "Ho Chi Minh City"
+  ],
+  "severity": "SEVERE",
+  "source": "Indian Ministry of Commerce and Industry",
+  "description": "The Indian government has imposed a 100% tariff on goods imported from Vietnam, covering key agri-commodities including cashew, black pepper and green coffee. Buyers at Mumbai and Chennai gateways face immediate cost escalation and renegotiation of supply contracts; spot shortages are expected over the next 30 days.",
+  "expected_impact": {
+    "port_disruption": false,
+    "road_disruption": false,
+    "power_outage_risk": false,
+    "manufacturing_disruption": true
+  },
+  "affected_materials": [
+    "Cashew Nuts",
+    "Black Pepper",
+    "Green Coffee"
+  ]
+}

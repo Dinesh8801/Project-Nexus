@@ -1,0 +1,25 @@
+{
+  "event_id": "EVT-2026-007",
+  "event_timestamp": "2026-09-24T03:00:00Z",
+  "event_type": "Avalanche",
+  "event_name": "Avalanche in the Philippine Cordillera",
+  "country": "Philippines",
+  "affected_regions": [
+    "Cordillera",
+    "Benguet",
+    "Baguio"
+  ],
+  "severity": "SEVERE",
+  "source": "Philippines National Disaster Risk Reduction and Management Council",
+  "description": "A major avalanche and snow-slide event has severed highland transport corridors in the Cordillera region. Truck routes carrying cashew and pepper loads down to Manila are blocked and re-routed trucking remains congested; recovery is expected to take 7-10 days.",
+  "expected_impact": {
+    "port_disruption": false,
+    "road_disruption": true,
+    "power_outage_risk": true,
+    "manufacturing_disruption": false
+  },
+  "affected_materials": [
+    "Cashew Nuts",
+    "Black Pepper"
+  ]
+}
